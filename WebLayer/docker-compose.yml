@@ -1,0 +1,39 @@
+version: '3.7'
+
+services:
+#  app:
+#    image: mcr.microsoft.com/dotnet/core/sdk:3.0
+#    volumes:
+#      - source-code:/code/app
+#      - /var/run/docker.sock:/var/run/docker.sock:ro
+#    working_dir: /code/app
+#    command: /bin/sh -c "dotnet restore && dotnet watch run --no-restore"
+#    environment:
+#      DOTNET_USE_POLLING_FILE_WATCHER: 1
+#      DOTNET_RUNNING_IN_CONTAINER: 1
+#    ports:
+#      - 80:80
+#      - 443:443
+#    links:
+#      - postgres
+
+  postgres:
+    image: postgres:latest
+    volumes:
+      - database:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: secret
+      POSTGRES_USER: application
+      POSTGRES_DB: application
+    ports:
+      - 5432:5432
+
+volumes:
+#  source-code:
+#    driver: local
+#    driver_opts:
+#      type: nfs
+#      o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
+#      device: ":${PWD}"
+  database:
+    driver: local

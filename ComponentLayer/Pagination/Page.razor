@@ -1,0 +1,45 @@
+@using ComponentLayer.Pagination.ComponentFactory
+@using ComponentLayer.Pagination.Data
+@namespace ComponentLayer.Pagination
+@inject IPageRendererFactory PageRendererFactory;
+
+@RenderPage()
+
+@code {
+
+    [Parameter]
+    public int CurrentPage { get; set; }
+
+    [Parameter]
+    public int PageNumber { get; set; }
+
+    [Parameter]
+    public int MinPageValue { get; set; }
+
+    [Parameter]
+    public int MaxPageValue { get; set; }
+
+    [Parameter]
+    public PageType PageType { get; set; }
+
+    [Parameter]
+    public Action<int> OnPageSelect { get; set; }
+
+    [Parameter]
+    public EventCallback<int> CurrentPageChanged { get; set; }
+
+    private RenderFragment RenderPage() => builder =>
+    {
+        var parameters = new PageParams
+        {
+            CurrentPage = CurrentPage,
+            PageNumber = PageNumber,
+            MinPageValue = MinPageValue,
+            MaxPageValue = MaxPageValue,
+            OnPageSelect = OnPageSelect,
+        };
+
+        PageRendererFactory.Render(PageType, builder, parameters);
+    };
+
+}

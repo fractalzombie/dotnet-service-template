@@ -1,0 +1,49 @@
+@* ReSharper disable once RedundantUsingDirective *@
+@using ComponentLayer.Pagination
+@using ComponentLayer.Pagination.Data
+@using ComponentLayer.Pagination.Services
+
+@namespace ComponentLayer
+
+@inject IPageServiceFactory PageServiceFactory;
+
+<ul id="@Id" class="relative z-0 inline-flex shadow-sm">
+    @foreach (var pv in PageList)
+    {
+        <Page
+            @bind-CurrentPage="@CurrentPage"
+             PageNumber="@(pv.Number)"
+             MinPageValue="@PageService.MinPageValue"
+             MaxPageValue="@PageService.PageCount"
+             OnPageSelect="@OnPageSelect"
+             PageType="@(pv.Type)"/>
+    }
+</ul>
+
+@code {
+
+    [Parameter]
+    public string Id { get; set; } = "pagination-nav";
+
+    [Parameter]
+    public int CurrentPage { get; set; }
+
+    [Parameter]
+    public int SidePageCount { get; set; } = 2;
+
+    [Parameter]
+    public int Limit { get; set; }
+
+    [Parameter]
+    public int ElementsCount { get; set; }
+
+    [Parameter]
+    public EventCallback<int> CurrentPageChanged { get; set; }
+
+    private IEnumerable<PageView> PageList => PageService.Paginate();
+
+    private PageService PageService => PageServiceFactory.CreateInstance(CurrentPage, SidePageCount, ElementsCount, Limit);
+
+    private void OnPageSelect(int selectedPage) => PageService.OnPageSelect(selectedPage, CurrentPageChanged);
+
+}
