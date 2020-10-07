@@ -22,7 +22,7 @@ cd WebLayer
 dotnet watch run
 ```
 #### Docker way:
-```
+```bash
 cd WebLayer
 # Configure docker-compose.yml
 docker-compose up -d
